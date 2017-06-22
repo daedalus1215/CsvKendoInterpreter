@@ -1,5 +1,5 @@
 <?php
-namespace CsvKendoInterpreter;
+namespace CsvKendoInterpreter\Reader;
 
 /**
  * Created by PhpStorm.
@@ -19,17 +19,20 @@ class CSVReader
      */
     public function parse($csvFile)
     {
-        $row = 1;
-        if (($handle = fopen($csvFile, "r")) !== FALSE) {
-            while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                $num = count($data);
-                echo "<p> $num fields in line $row: <br /></p>\n";
-                $row++;
-                for ($c=0; $c < $num; $c++) {
-                    $this->properties[] = $data[$c];
+        try {
+            if (($handle = fopen($csvFile, "r")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    foreach ($data as $columnName) {
+                        $this->properties[] = $columnName;
+                    }
                 }
+                fclose($handle);
             }
-            fclose($handle);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException("Did not insert a file. " . $e->getMessage());
         }
+
+
+        return $this->properties;
     }
 }

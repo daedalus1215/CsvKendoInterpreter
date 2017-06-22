@@ -4,8 +4,7 @@
     },
     "autoload": {
         "psr-4": {
-            "CsvKendoInterpreter\\": "src/",
-            "CsvKendoInterpreter\\Interpreter\\": "src/Interpreter/"
+            "CsvKendoInterpreter\\": "src/"
         }
     }
 }
