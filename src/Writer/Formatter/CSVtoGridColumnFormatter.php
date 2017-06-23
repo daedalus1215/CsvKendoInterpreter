@@ -9,12 +9,12 @@
 namespace CsvKendoInterpreter\Writer\Formatter;
 
 
-class CSVtoGridColumnFormatter
+class CSVtoGridColumnFormatter implements FormatterInterface
 {
     public function interpret($columnName)
     {
         return
-"
+            "
 {
     field: \"$columnName\",
     title: \"$columnName\",

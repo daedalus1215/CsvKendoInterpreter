@@ -2,6 +2,7 @@
 use CsvKendoInterpreter\Reader\CSVReader;
 
 use PHPUnit\Framework\TestCase;
+use test\StubFactory\Reader\Formatter\StubSingleRowFormatterFactory;
 
 /**
  * Created by PhpStorm.
@@ -18,7 +19,8 @@ class CSVReaderTest extends TestCase
 
     public function setup()
     {
-        $this->CSVReader = new CSVReader();
+        $stubSingleRowFormatter = (new StubSingleRowFormatterFactory())->createStub();
+        $this->CSVReader = new CSVReader($stubSingleRowFormatter);
     }
 
     public function testParseEquals()

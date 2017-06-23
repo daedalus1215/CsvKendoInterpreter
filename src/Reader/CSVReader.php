@@ -1,5 +1,6 @@
 <?php
 namespace CsvKendoInterpreter\Reader;
+use CsvKendoInterpreter\Reader\Formatter\FormatterInterface;
 
 /**
  * Created by PhpStorm.
@@ -15,16 +16,28 @@ class CSVReader
     private $properties;
 
     /**
+     * @var FormatterInterface
+     */
+    private $readerFormatter;
+
+    /**
+     * CSVReader constructor.
+     * @param FormatterInterface $readerFormatter
+     */
+    public function __construct(FormatterInterface $readerFormatter)
+    {
+        $this->readerFormatter = $readerFormatter;
+    }
+
+    /**
      * @param string $csvFile: "theFile.csv"
      */
     public function parse($csvFile)
     {
         try {
             if (($handle = fopen($csvFile, "r")) !== FALSE) {
-                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                    foreach ($data as $columnName) {
-                        $this->properties[] = $columnName;
-                    }
+                while (($data = fgetcsv($handle, null, ",")) !== FALSE) {
+                    $this->properties = $this->readerFormatter->interpret($data);
                 }
                 fclose($handle);
             }
