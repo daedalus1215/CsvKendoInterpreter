@@ -2,6 +2,7 @@
 
 use CsvKendoInterpreter\Writer\KendoWriter;
 use PHPUnit\Framework\TestCase;
+use test\StubFactory\StubCSVtoGridFormatterFactory;
 
 class KendoWriterTest extends TestCase
 {
@@ -13,7 +14,8 @@ class KendoWriterTest extends TestCase
 
     public function setup()
     {
-        $this->kendoWriter = new KendoWriter();
+        $stubWriterFormatter = (new StubCSVtoGridFormatterFactory())->createStub();
+        $this->kendoWriter = new KendoWriter($stubWriterFormatter);
     }
 
     public function testWrite()

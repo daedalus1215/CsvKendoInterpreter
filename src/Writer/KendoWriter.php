@@ -2,9 +2,26 @@
 namespace CsvKendoInterpreter\Writer;
 
 
+use CsvKendoInterpreter\Writer\Formatter\FormatterInterface;
+
+
 class KendoWriter
 {
     private $properties;
+
+    /**
+     * @var FormatterInterface
+     */
+    private $formatter;
+
+    /**
+     * KendoWriter constructor.
+     * @param FormatterInterface $formatter
+     */
+    public function __construct(FormatterInterface $formatter)
+    {
+        $this->formatter = $formatter;
+    }
 
     /**
      * @param array $properties: the array of properties we are writing to a file
@@ -15,13 +32,8 @@ class KendoWriter
         try {
             if (($myfile  = fopen($location, "w")) !== FALSE) {
                 foreach ($properties as $columnName) {
-                    $newPropertyStanza =
-"
-{
-    field: \"$columnName\",
-    title: \"$columnName\",
-    width: 150
-},";
+                    $newPropertyStanza = $this->formatter->interpret($columnName);
+
                     $this->properties[] = $newPropertyStanza;
 
                     fwrite($myfile, $newPropertyStanza);
