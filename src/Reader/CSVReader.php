@@ -8,7 +8,7 @@ use CsvKendoInterpreter\Reader\Formatter\FormatterInterface;
  * Date: 6/21/2017
  * Time: 9:09 PM
  */
-class CSVReader
+class CSVReader implements ReaderInterface
 {
     /**
      * @var array $properties
@@ -35,7 +35,8 @@ class CSVReader
     public function parse($csvFile)
     {
         try {
-            if (($handle = fopen($csvFile, "r")) !== FALSE) {
+            $handle = fopen($csvFile, "r");
+            if ($handle) {
                 while (($data = fgetcsv($handle, null, ",")) !== FALSE) {
                     $this->properties = $this->readerFormatter->interpret($data);
                 }
